@@ -1,6 +1,7 @@
 package mindustry.net;
 
 import arc.*;
+import arc.struct.Seq;
 import arc.util.*;
 import arc.util.io.*;
 import mindustry.core.*;
@@ -13,6 +14,7 @@ import mindustry.maps.Map;
 import mindustry.net.Administration.*;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.nio.*;
 import java.util.*;
 
@@ -89,12 +91,45 @@ public class NetworkIO{
         }
     }
 
-    public static ByteBuffer writeServerData(){
-        String name = (headless ? Config.serverName.string() : player.name);
-        String description = headless && !Config.desc.string().equals("off") ? Config.desc.string() : "";
-        String map = state.map.name();
-
+    private static ByteBuffer whitelistInfo(Seq<PlayerInfo> info) {
         ByteBuffer buffer = ByteBuffer.allocate(500);
+
+        String name = (headless ? Config.serverName.string() : player.name);
+        String description = "[red]ERROR 未知个体 拒绝访问！";
+        String map = "拒绝访问原因";
+
+        writeString(buffer, name, 100);
+        writeString(buffer, map, 64);
+
+        buffer.putInt(Core.settings.getInt("totalPlayers", Groups.player.size()));
+        buffer.putInt(0);
+        buffer.putInt(Version.build);
+        writeString(buffer, Version.type);
+
+        buffer.put((byte) state.rules.mode().ordinal());
+        buffer.putInt(netServer.admins.getPlayerLimit());
+
+        writeString(buffer, description, 100);
+        writeString(buffer, "未在白名单!", 50);
+
+        return buffer;
+    }
+
+    public static ByteBuffer writeServerData(InetAddress address) {
+        Seq<PlayerInfo> info = netServer.admins.findByIPs(address.getHostAddress());
+
+        if (netServer.admins.isWhitelistEnabled()) {
+            if (info.isEmpty()) {
+                return whitelistInfo(info);
+            }
+            if (!netServer.admins.isWhitelisted(info.first().id, info.first().adminUsid)) {
+                return whitelistInfo(info);
+            }
+        }
+        ByteBuffer buffer = ByteBuffer.allocate(500);
+
+        String name = (headless ? Config.serverName.string() : player.name);
+        String map = state.map.name();
 
         writeString(buffer, name, 100);
         writeString(buffer, map, 64);
@@ -104,13 +139,26 @@ public class NetworkIO{
         buffer.putInt(Version.build);
         writeString(buffer, Version.type);
 
-        buffer.put((byte)state.rules.mode().ordinal());
+        buffer.put((byte) state.rules.mode().ordinal());
         buffer.putInt(netServer.admins.getPlayerLimit());
 
-        writeString(buffer, description, 100);
-        if(state.rules.modeName != null){
+        String description = "";
+
+        if (info.isEmpty()) {
+            description += "[red]ERROR 未知个体\n[cyan]未开启防卫模式...传输资料";
+        } else {
+            description += "[green]已检测到上次刻印个体：[white]" + info.first().lastName + "\n[cyan]存在于数据库...传输资料";
+        }
+        description += "\n[white]" + Config.desc.string();
+
+        writeString(buffer, description, 1000);
+
+        if (state.rules.modeName != null) {
             writeString(buffer, state.rules.modeName, 50);
         }
+
+
+
         return buffer;
     }
 

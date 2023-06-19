@@ -50,12 +50,6 @@ public class Administration{
                     player.getInfo().messageInfractions = 0;
                 }
 
-                //prevent players from sending the same message twice in the span of 10 seconds
-                if(message.equals(player.getInfo().lastSentMessage) && Time.timeSinceMillis(player.getInfo().lastMessageTime) < 1000 * 10){
-                    player.sendMessage("[scarlet]You may not send the same message twice.");
-                    return null;
-                }
-
                 player.getInfo().lastSentMessage = message;
                 player.getInfo().lastMessageTime = Time.millis();
             }
@@ -484,36 +478,36 @@ public class Administration{
 
         public static final Config
 
-        serverName = new Config("name", "The server name as displayed on clients.", "Server", "servername"),
-        desc = new Config("desc", "The server description, displayed under the name. Max 100 characters.", "off"),
-        port = new Config("port", "The port to host on.", Vars.port),
-        locale = new Config("locale", "The locale for localizedName.", "default", "locale"),
-        autoUpdate = new Config("autoUpdate", "Whether to auto-update and exit when a new bleeding-edge update arrives.", false),
-        showConnectMessages = new Config("showConnectMessages", "Whether to display connect/disconnect messages.", true),
-        enableVotekick = new Config("enableVotekick", "Whether votekick is enabled.", true),
-        startCommands = new Config("startCommands", "Commands run at startup. This should be a comma-separated list.", ""),
-        logging = new Config("logging", "Whether to log everything to files.", true),
-        strict = new Config("strict", "Whether strict mode is on - corrects positions and prevents duplicate UUIDs.", true),
-        antiSpam = new Config("antiSpam", "Whether spammers are automatically kicked and rate-limited.", headless),
-        interactRateWindow = new Config("interactRateWindow", "Block interaction rate limit window, in seconds.", 6),
-        interactRateLimit = new Config("interactRateLimit", "Block interaction rate limit.", 25),
-        interactRateKick = new Config("interactRateKick", "How many times a player must interact inside the window to get kicked.", 60),
-        messageRateLimit = new Config("messageRateLimit", "Message rate limit in seconds. 0 to disable.", 0),
-        messageSpamKick = new Config("messageSpamKick", "How many times a player must send a message before the cooldown to get kicked. 0 to disable.", 3),
-        packetSpamLimit = new Config("packetSpamLimit", "Limit for packet count sent within 3sec that will lead to a blacklist + kick.", 300),
-        chatSpamLimit = new Config("chatSpamLimit", "Limit for chat packet count sent within 2sec that will lead to a blacklist + kick. Not the same as a rate limit.", 20),
+        serverName = new Config("name", "服务器名字", "Server", "servername"),
+        desc = new Config("desc", "服务器描述", "off"),
+        port = new Config("port", "服务器端口", Vars.port),
+        locale = new Config("locale", "服务器本地化语言", "default", "locale"),
+        autoUpdate = new Config("autoUpdate", "自动更新(但是这个端真的有吗)", false),
+        showConnectMessages = new Config("showConnectMessages", "显示链接信息", true),
+        enableVotekick = new Config("enableVotekick", "开启投票踢人(但是插件免疫这个)", true),
+        startCommands = new Config("startCommands", "开始命令", ""),
+        logging = new Config("logging", "记录日志", true),
+        strict = new Config("strict", "严格模式", true),
+        antiSpam = new Config("antiSpam", "反刷屏", headless),
+        interactRateWindow = new Config("interactRateWindow", "每秒交互频率窗口", 6),
+        interactRateLimit = new Config("interactRateLimit", "交互频率限制", 25),
+        interactRateKick = new Config("interactRateKick", "交互频率踢出阈值", 60),
+        messageRateLimit = new Config("messageRateLimit", "刷屏限制条数, 0关闭", 0),
+        messageSpamKick = new Config("messageSpamKick", "刷屏踢出条数, 0关闭", 3),
+        packetSpamLimit = new Config("packetSpamLimit", "3s发包黑名单需求数量", 300),
+        chatSpamLimit = new Config("chatSpamLimit", "2s聊天黑名单需求数量", 20),
         socketInput = new Config("socketInput", "Allows a local application to control this server through a local TCP socket.", false, "socket", () -> Events.fire(Trigger.socketConfigChanged)),
         socketInputPort = new Config("socketInputPort", "The port for socket input.", 6859, () -> Events.fire(Trigger.socketConfigChanged)),
         socketInputAddress = new Config("socketInputAddress", "The bind address for socket input.", "localhost", () -> Events.fire(Trigger.socketConfigChanged)),
-        allowCustomClients = new Config("allowCustomClients", "Whether custom clients are allowed to connect.", !headless, "allow-custom"),
-        whitelist = new Config("whitelist", "Whether the whitelist is used.", false),
-        motd = new Config("motd", "The message displayed to people on connection.", "off"),
-        autosave = new Config("autosave", "Whether the periodically save the map when playing.", false),
-        autosaveAmount = new Config("autosaveAmount", "The maximum amount of autosaves. Older ones get replaced.", 10),
-        autosaveSpacing = new Config("autosaveSpacing", "Spacing between autosaves in seconds.", 60 * 5),
-        debug = new Config("debug", "Enable debug logging.", false, () -> Log.level = debug() ? LogLevel.debug : LogLevel.info),
-        snapshotInterval = new Config("snapshotInterval", "Client entity snapshot interval in ms.", 200),
-        autoPause = new Config("autoPause", "Whether the game should pause when nobody is online.", false);
+        allowCustomClients = new Config("allowCustomClients", "允许版本不同的客户端", !headless, "allow-custom"),
+        whitelist = new Config("whitelist", "白名单", false),
+        motd = new Config("motd", "链接信息", "off"),
+        autosave = new Config("autosave", "自动存档", false),
+        autosaveAmount = new Config("autosaveAmount", "自动存档数量", 10),
+        autosaveSpacing = new Config("autosaveSpacing", "自动存档间隔(s)", 60 * 5),
+        debug = new Config("debug", "开启debug日志", false, () -> Log.level = debug() ? LogLevel.debug : LogLevel.info),
+        snapshotInterval = new Config("snapshotInterval", "客户端快照发送间隔(ms)", 200),
+        autoPause = new Config("autoPause", "没人在线暂停服务器", false);
 
         public final Object defaultValue;
         public final String name, key, description;

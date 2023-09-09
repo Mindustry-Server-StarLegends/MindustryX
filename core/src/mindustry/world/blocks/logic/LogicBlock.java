@@ -30,8 +30,8 @@ import java.util.zip.*;
 import static mindustry.Vars.*;
 
 public class LogicBlock extends Block{
+    private static final int maxByteLen = 1024 * 100;
     public static boolean running = false;
-    private static final int maxByteLen = 1024 * 500;
 
     public int maxInstructionScale = 5;
     public int instructionsPerTick = 1;
@@ -177,7 +177,7 @@ public class LogicBlock extends Block{
 
                 int bytelen = stream.readInt();
 
-                if(bytelen > maxByteLen) throw new RuntimeException("Malformed logic data! Length: " + bytelen);
+                if(bytelen > maxByteLen) throw new RuntimeException("Logic data too long or malformed! Length: " + bytelen);
 
                 byte[] bytes = new byte[bytelen];
                 stream.readFully(bytes);

@@ -144,12 +144,10 @@ public class NetworkIO{
 
         String description = "";
 
-        if (info.isEmpty()) {
-            description += "[red]ERROR 未知个体\n[cyan]未开启防卫模式...传输资料";
-        } else {
-            description += "[green]已检测到上次刻印个体：[white]" + info.first().lastName + "\n[cyan]存在于数据库...传输资料";
+        if (!info.isEmpty()) {
+            description += "[green]已检测到上次刻印个体：[white]" + info.first().lastName + "\n[cyan]存在于数据库...传输资料\n[white]";
         }
-        description += "\n[white]" + Config.desc.string();
+        description += Config.desc.string();
 
         writeString(buffer, description, 1000);
 

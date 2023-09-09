@@ -4265,6 +4265,7 @@ public class UnitTypes{
             allowedInPayloads = false;
             logicControllable = false;
             playerControllable = false;
+            physics = false;
             envDisabled = 0;
             payloadCapacity = 0f;
 
@@ -4297,6 +4298,7 @@ public class UnitTypes{
             engineSize = 2f;
             engineOffset = 6.5f;
             payloadCapacity = 0f;
+            physics = false;
             targetable = false;
             bounded = false;
 

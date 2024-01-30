@@ -16,7 +16,7 @@ import static mindustry.Vars.*;
 
 @Component
 abstract class StatusComp implements Posc, Flyingc{
-    private Seq<StatusEntry> statuses = new Seq<>();
+    Seq<StatusEntry> statuses = new Seq<>();
     private transient Bits applied = new Bits(content.getBy(ContentType.status).size);
 
     //these are considered read-only

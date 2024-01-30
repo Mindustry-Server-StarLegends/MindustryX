@@ -21,7 +21,6 @@ public enum LAccess{
     maxHealth,
     shield,
     heat,
-    shield,
     efficiency,
     progress,
     timescale,

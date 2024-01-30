@@ -62,7 +62,6 @@ public class GlobalVars{
         put("@ctrlProcessor", ctrlProcessor);
         put("@ctrlPlayer", ctrlPlayer);
         put("@ctrlCommand", ctrlCommand);
-        varClient = put("@client", 0);
 
         //store base content
 
